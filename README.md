@@ -1,11 +1,8 @@
 # contador-binario-arduino
 Implementación y simulación de un contador binario de 4 bits (0 a 15) con Arduino Uno y LEDs. Incluye esquemas en Tinkercad, código en C++ optimizado con arrays/bitRead y evidencias de montaje físico.
 
-# Parcial Práctico – Contador Binario de 4 Bits con Arduino Uno
-
-Implementación física y simulación de un contador binario de 4 bits (conteo de 0 a 15) utilizando una placa Arduino Uno, diodos LED y resistencias limitadoras, aplicando optimización de código mediante arrays y manipulación de bits.
-
----
+## 1. Descripción del proyecto
+El proyecto consiste en el diseño, programación y montaje de un contador binario de 4 bits. Utiliza una placa Arduino Uno para controlar cuatro LEDs que representan visualmente los números decimales del 0 al 15 mediante sus equivalentes en sistema binario, gestionando los estados (encendido/apagado) a través de operaciones bit a bit.
 
 ## Integrantes
 * Sebastián Martinez 
@@ -14,298 +11,55 @@ Implementación física y simulación de un contador binario de 4 bits (conteo d
 * Alexandro Leones 
 * Steven Santamaría 
 
----
+## 2. Materiales utilizados
+* 1 Placa Arduino UNO R3
+* 1 Protoboard
+* 4 Diodos LED (Indicadores de bits 0 al 3)
+* 1 Diodo LED extra (Indicador de límite para el Reto 5)
+* 4 Resistencias de 220 Ω
+* 1 Pulsador táctil (Para el Reto 3)
+* Cables tipo Jumper (Macho-Macho)
 
-## Objetivos del Laboratorio
-* Implementar salidas digitales discontinuas en Arduino mediante arrays.
-* Representar números enteros en formato binario mediante LEDs (0 = apagado, 1 = encendido).
-* Optimizar la estructura del firmware sustituyendo código repetitivo por bucles `for` y `bitRead()`.
-* Dimensionar resistencias de protección aplicando la Ley de Ohm.
+## 3. Explicación del circuito
+* **LEDs y Resistencias:** Los ánodos (patas largas) de los 4 LEDs están conectados a los pines digitales 2, 4, 7 y 8 a través de resistencias de 220 Ω. Estas resistencias limitan la corriente (~13.6 mA) protegiendo el LED y el pin del microcontrolador.
+* **GND (Tierra):** Los cátodos (patas cortas) de todos los LEDs se puentean a una línea común en la protoboard que retorna al pin GND del Arduino.
+* **Pulsador (Reto 3):** Conectado entre el pin digital 12 y GND. Utiliza la resistencia pull-up interna del Arduino, leyendo un nivel bajo (`LOW`) cuando se presiona.
+* **LED Indicador (Reto 5):** Conectado al pin 13 con su respectiva resistencia de 220 Ω a GND, actuando como señalizador visual del valor máximo (15).
 
----
+## 4. Funcionamiento del contador binario
+Cuatro LEDs permiten generar $2^4 = 16$ combinaciones posibles. Cada LED representa una potencia de 2 dependiendo de su posición:
+* LED 1 (Bit 0): $2^0 = 1$
+* LED 2 (Bit 1): $2^1 = 2$
+* LED 3 (Bit 2): $2^2 = 4$
+* LED 4 (Bit 3): $2^3 = 8$
+El estado encendido (`1`) suma el valor de su posición. Si el número decimal es 5, su representación binaria es `0101` (LEDs 3 y 1 encendidos: $4 + 1 = 5$). 
 
-## Materiales y Componentes
+## 5. Explicación del código
+* `setup()`: Función que se ejecuta una sola vez al arrancar. Se usa para configurar el hardware inicial.
+* `loop()`: Ciclo infinito que se ejecuta repetidamente. Contiene la lógica principal de conteo.
+* `pinMode()`: Configura un pin específico para que funcione como entrada (`INPUT` / `INPUT_PULLUP`) o salida (`OUTPUT`).
+* `digitalWrite()`: Envía voltaje (`HIGH` = 5V) o lo retira (`LOW` = 0V) en un pin configurado como salida.
+* `digitalRead()`: Lee el estado eléctrico de un pin configurado como entrada, devolviendo `HIGH` o `LOW`.
+* `delay()`: Detiene la ejecución del programa durante una cantidad específica de milisegundos.
+* **Arreglos:** Colecciones de variables del mismo tipo. Usamos `leds[] = {2, 4, 7, 8}` para agrupar los pines discontinuos y recorrerlos fácilmente.
+* **Ciclos for:** Estructura iterativa que repite un bloque de código un número determinado de veces.
+* **Operadores bitwise (`&` y `<<`):** 
+  * `<<` (Left Shift): Desplaza el número binario `1` a la izquierda según la posición del ciclo (`bit`). Crea una "máscara" (ej. `1 << 2` resulta en `0100`).
+  * `&` (AND): Compara el número actual con la máscara. `(numero & (1 << bit))` devuelve un valor mayor a cero solo si el bit en esa posición exacta es un `1`. Esto determina si el LED correspondiente debe encenderse.
 
-<table>
-  <thead>
-    <tr>
-      <th align="center">Cantidad</th>
-      <th align="left">Componente</th>
-      <th align="left">Descripción</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center">1</td>
-      <td><strong>Arduino Uno R3</strong></td>
-      <td>Placa de desarrollo principal</td>
-    </tr>
-    <tr>
-      <td align="center">1</td>
-      <td><strong>Protoboard</strong></td>
-      <td>Tablero de pruebas para montaje sin soldadura</td>
-    </tr>
-    <tr>
-      <td align="center">4</td>
-      <td><strong>Diodos LED</strong></td>
-      <td>Indicadores visuales de cada bit</td>
-    </tr>
-    <tr>
-      <td align="center">4</td>
-      <td><strong>Resistencias 220 Ω</strong></td>
-      <td>Resistencias limitadoras de corriente</td>
-    </tr>
-    <tr>
-      <td align="center">-</td>
-      <td><strong>Jumpers macho-macho</strong></td>
-      <td>Cables de conexión</td>
-    </tr>
-    <tr>
-      <td align="center">1</td>
-      <td><strong>Cable USB</strong></td>
-      <td>Alimentación y carga de firmware</td>
-    </tr>
-  </tbody>
-</table>
+## 6. Desarrollo de los cinco retos
+* **Reto 1 (Velocidad):** Se solicitó un retraso de 500 ms usando variables. *Modificación:* Se creó `int waitDelay = 500;` y se reemplazó el número fijo en `delay(waitDelay)`. *Resultado:* El contador avanza al doble de velocidad.
+* **Reto 2 (Descendente):** Se solicitó contar de 15 a 0. *Modificación:* Ajuste en el for principal a `for (int numero = 15; numero >= 0; numero--)`. *Resultado:* Los LEDs decrementan su valor binario hasta 0 y reinician en 15.
+* **Reto 3 (Botón):** Se solicitó avance manual. *Modificación:* Se eliminó el `delay` principal y se introdujo un `if` que compara `estadoBotonAnterior` y `digitalRead(PIN_BOTON)`. *Resultado:* El conteo solo avanza una posición al soltar/presionar el pulsador físico.
+* **Reto 4 (Pares):** Se solicitó mostrar solo números pares (0, 2, 4...). *Modificación:* El for principal se alteró a `for (int numero = 0; numero <= 15; numero += 2)`. *Resultado:* El bit 0 (LED 1) siempre permanece apagado, mostrando solo números divisibles entre 2.
+* **Reto 5 (LED indicador):** Se solicitó un LED que se encienda en 15. *Modificación:* Se agregó un quinto LED en el pin 13 y la condición `if (numero == 15)` dentro del loop. *Resultado:* Al llegar a `1111`, el quinto LED se enciende automáticamente.
 
----
+## 7. Evidencias
+*(Reemplazar con enlaces o rutas relativas del repositorio)*
+* **Montaje físico:** `./docs/fotos/fot_fisica.jpeg`
+* **Simulación en Tinkercad:** `./docs/fotos/circuito1.png`
+* **Implementación del botón y 5to LED:** `./evidencias/montaje_fisico/foto_retos.jpg`
 
-## Justificación Técnica: ¿Por qué resistencias de 220 Ω?
-
-Se calculan aplicando la **Ley de Ohm** ($V = I \times R$):
-
-* **Voltaje de salida digital:** $V_{pin} = 5\text{ V}$
-* **Caída de tensión típica del LED:** $V_{led} \approx 2\text{ V}$
-* **Voltaje en la resistencia:** $V_R = 5\text{ V} - 2\text{ V} = 3\text{ V}$
-
-$$I = \frac{V_R}{R} = \frac{3\text{ V}}{220\ \Omega} \approx 13.6\text{ mA}$$
-
-Una corriente de **~13.6 mA** garantiza un brillo óptimo y nítido sin sobrepasar el límite de seguridad de los pines del microcontrolador (40 mA máximos) ni comprometer la vida útil del LED.
-
----
-
-## Asignación de Pines y Pesos Binarios
-
-<table>
-  <thead>
-    <tr>
-      <th align="left">Componente</th>
-      <th align="center">Pin Arduino</th>
-      <th align="center">Bit Binario</th>
-      <th align="center">Ponderación</th>
-      <th align="left">Función</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td><strong>LED 1</strong></td>
-      <td align="center">Pin 2</td>
-      <td align="center">Bit 0 (LSB)</td>
-      <td align="center">2⁰ = 1</td>
-      <td>Bit menos significativo</td>
-    </tr>
-    <tr>
-      <td><strong>LED 2</strong></td>
-      <td align="center">Pin 4</td>
-      <td align="center">Bit 1</td>
-      <td align="center">2¹ = 2</td>
-      <td>Bit intermedio</td>
-    </tr>
-    <tr>
-      <td><strong>LED 3</strong></td>
-      <td align="center">Pin 7</td>
-      <td align="center">Bit 2</td>
-      <td align="center">2² = 4</td>
-      <td>Bit intermedio</td>
-    </tr>
-    <tr>
-      <td><strong>LED 4</strong></td>
-      <td align="center">Pin 8</td>
-      <td align="center">Bit 3 (MSB)</td>
-      <td align="center">2³ = 8</td>
-      <td>Bit más significativo</td>
-    </tr>
-    <tr>
-      <td><strong>Cátodos</strong></td>
-      <td align="center">GND</td>
-      <td align="center">-</td>
-      <td align="center">-</td>
-      <td>Retorno común a tierra</td>
-    </tr>
-  </tbody>
-</table>
-
----
-
-## Tabla de Verdad (Conteo 0 al 15)
-
-<table>
-  <thead>
-    <tr>
-      <th align="center">Decimal</th>
-      <th align="center">LED 4 (Pin 8)<br><sub>[2³]</sub></th>
-      <th align="center">LED 3 (Pin 7)<br><sub>[2²]</sub></th>
-      <th align="center">LED 2 (Pin 4)<br><sub>[2¹]</sub></th>
-      <th align="center">LED 1 (Pin 2)<br><sub>[2⁰]</sub></th>
-      <th align="left">Estado Visual</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td align="center"><strong>0</strong></td>
-      <td align="center">0</td>
-      <td align="center">0</td>
-      <td align="center">0</td>
-      <td align="center">0</td>
-      <td>Todos apagados</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>1</strong></td>
-      <td align="center">0</td>
-      <td align="center">0</td>
-      <td align="center">0</td>
-      <td align="center">1</td>
-      <td>LED 1 encendido</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>2</strong></td>
-      <td align="center">0</td>
-      <td align="center">0</td>
-      <td align="center">1</td>
-      <td align="center">0</td>
-      <td>LED 2 encendido</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>3</strong></td>
-      <td align="center">0</td>
-      <td align="center">0</td>
-      <td align="center">1</td>
-      <td align="center">1</td>
-      <td>LEDs 1 y 2 encendidos</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>4</strong></td>
-      <td align="center">0</td>
-      <td align="center">1</td>
-      <td align="center">0</td>
-      <td align="center">0</td>
-      <td>LED 3 encendido</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>5</strong></td>
-      <td align="center">0</td>
-      <td align="center">1</td>
-      <td align="center">0</td>
-      <td align="center">1</td>
-      <td>LEDs 1 y 3 encendidos</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>6</strong></td>
-      <td align="center">0</td>
-      <td align="center">1</td>
-      <td align="center">1</td>
-      <td align="center">0</td>
-      <td>LEDs 2 y 3 encendidos</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>7</strong></td>
-      <td align="center">0</td>
-      <td align="center">1</td>
-      <td align="center">1</td>
-      <td align="center">1</td>
-      <td>LEDs 1, 2 y 3 encendidos</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>8</strong></td>
-      <td align="center">1</td>
-      <td align="center">0</td>
-      <td align="center">0</td>
-      <td align="center">0</td>
-      <td>LED 4 encendido</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>9</strong></td>
-      <td align="center">1</td>
-      <td align="center">0</td>
-      <td align="center">0</td>
-      <td align="center">1</td>
-      <td>LEDs 1 y 4 encendidos</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>10</strong></td>
-      <td align="center">1</td>
-      <td align="center">0</td>
-      <td align="center">1</td>
-      <td align="center">0</td>
-      <td>LEDs 2 y 4 encendidos</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>11</strong></td>
-      <td align="center">1</td>
-      <td align="center">0</td>
-      <td align="center">1</td>
-      <td align="center">1</td>
-      <td>LEDs 1, 2 y 4 encendidos</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>12</strong></td>
-      <td align="center">1</td>
-      <td align="center">1</td>
-      <td align="center">0</td>
-      <td align="center">0</td>
-      <td>LEDs 3 y 4 encendidos</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>13</strong></td>
-      <td align="center">1</td>
-      <td align="center">1</td>
-      <td align="center">0</td>
-      <td align="center">1</td>
-      <td>LEDs 1, 3 y 4 encendidos</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>14</strong></td>
-      <td align="center">1</td>
-      <td align="center">1</td>
-      <td align="center">1</td>
-      <td align="center">0</td>
-      <td>LEDs 2, 3 y 4 encendidos</td>
-    </tr>
-    <tr>
-      <td align="center"><strong>15</strong></td>
-      <td align="center">1</td>
-      <td align="center">1</td>
-      <td align="center">1</td>
-      <td align="center">1</td>
-      <td>Todos encendidos</td>
-    </tr>
-  </tbody>
-</table>
-
----
-
-## Código Fuente Base
-
-```cpp
-// Asignación de pines discontinuos en un array
-const int leds[] = {2, 4, 7, 8};
-const int TOTAL_LEDS = 4;
-const int TIEMPO_ESPERA = 1000; // 1 segundo por estado
-
-void setup() {
-  // Inicialización de pines como salidas mediante bucle
-  for (int i = 0; i < TOTAL_LEDS; i++) {
-    pinMode(leds[i], OUTPUT);
-  }
-}
-
-void loop() {
-  // Ciclo principal de conteo de 0 a 15
-  for (int numero = 0; numero <= 15; numero++) {
-    // Extracción y escritura de cada bit en su respectivo pin
-    for (int bit = 0; bit < TOTAL_LEDS; bit++) {
-      digitalWrite(leds[bit], bitRead(numero, bit));
-    }
-    delay(TIEMPO_ESPERA);
-  }
-}
+## 8. Enlace de funcionamiento
+* **Video demostrativo:** [Insertar Enlace de YouTube/Google Drive aquí]
+* **Simulación interactiva:** [Insertar Enlace de Tinkercad aquí]
