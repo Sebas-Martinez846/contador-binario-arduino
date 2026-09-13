@@ -8,10 +8,11 @@ Implementación física y simulación de un contador binario de 4 bits (conteo d
 ---
 
 ## Integrantes
-* **Nombre Estudiante 1**
-* **Nombre Estudiante 2**
-* **Nombre Estudiante 3**
-* **Nombre Estudiante 4**
+* **Sebastián Martinez 1**
+* **Yeimer Ortiz 2**
+* **Camilo Martinez 3**
+* **Alexandro Leones 4**
+* **Steven Santamaría 5**
 
 ---
 
