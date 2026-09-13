@@ -56,9 +56,7 @@ El estado encendido (`1`) suma el valor de su posición. Si el número decimal e
 
 ## 7. Evidencias
 *(Reemplazar con enlaces o rutas relativas del repositorio)*
-* **Montaje físico: `./docs/fotos` y `./docs/videos`**
-* **Simulación en Tinkercad:** `./docs/fotos/circuito1.png`
-* **Implementación del botón y 5to LED: `./docs/fotos/circuito con 5 leds`**
+* **Las evidencias se encuentran en: `./evidencias`**
 
 ## 8. Enlace de funcionamiento
 * **Video demostrativo:** [https://youtube.com/shorts/umP8_quK6YE]
