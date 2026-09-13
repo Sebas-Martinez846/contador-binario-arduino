@@ -283,7 +283,7 @@ Una corriente de **~13.6 mA** garantiza un brillo óptimo y nítido sin sobrepas
 
 ---
 
-## ódigo Fuente Base
+## Código Fuente Base
 
 ```cpp
 // Asignación de pines discontinuos en un array
