@@ -54,10 +54,6 @@ El estado encendido (`1`) suma el valor de su posición. Si el número decimal e
 * **Reto 4 (Pares):** Se solicitó mostrar solo números pares (0, 2, 4...). *Modificación:* El for principal se alteró a `for (int numero = 0; numero <= 15; numero += 2)`. *Resultado:* El bit 0 (LED 1) siempre permanece apagado, mostrando solo números divisibles entre 2.
 * **Reto 5 (LED indicador):** Se solicitó un LED que se encienda en 15. *Modificación:* Se agregó un quinto LED en el pin 13 y la condición `if (numero == 15)` dentro del loop. *Resultado:* Al llegar a `1111`, el quinto LED se enciende automáticamente.
 
-## 7. Evidencias
-*(Reemplazar con enlaces o rutas relativas del repositorio)*
-* **Las evidencias se encuentran en: `./evidencias`**
-
 ## 8. Enlace de funcionamiento
 * **Video demostrativo:** [https://youtube.com/shorts/umP8_quK6YE]
 * **Simulación interactiva:** [https://www.tinkercad.com/things/bRoe2dM0TiH-primer-diseno?sharecode=HKOERj-NE_7qSPv1ypEqylI2slHjOgNc9rVHGWSa15Y]
