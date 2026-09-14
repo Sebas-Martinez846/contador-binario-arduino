@@ -9,7 +9,8 @@ El proyecto consiste en el diseño, programación y montaje de un contador binar
 * Yeimer Ortiz 
 * Camilo Martinez 
 * Alexandro Leones 
-* Steven Santamaría 
+* Steven Santamaría
+* Martín Castro  
 
 ## 2. Materiales utilizados
 * 1 Placa Arduino UNO R3
