@@ -60,4 +60,4 @@ El estado encendido (`1`) suma el valor de su posición. Si el número decimal e
 
 ## 8. Enlace de funcionamiento
 * **Video demostrativo:** [https://youtube.com/shorts/umP8_quK6YE]
-* **Simulación interactiva:** [https://www.tinkercad.com/things/bRoe2dM0TiH-primer-diseno]
+* **Simulación interactiva:** [https://www.tinkercad.com/things/bRoe2dM0TiH-primer-diseno?sharecode=HKOERj-NE_7qSPv1ypEqylI2slHjOgNc9rVHGWSa15Y]
